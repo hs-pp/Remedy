@@ -1,12 +1,11 @@
 ﻿using RemedySystem;
-using SystemCoreSystem;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-public class Remedy : AKeySystem
+public static class Remedy
 {
     #region Log
-    private static string ConfigPath = "Remedy/RemedyConfig";
+    // [AutoStaticsCleanup] Unity 6.5 feature
     private static RemedyConfig m_config;
     public static RemedyConfig Config // Lazy load this rather than OnInitialize in case we need logging before SystemCore is ready.
     {
@@ -14,11 +13,20 @@ public class Remedy : AKeySystem
         {
             if (m_config == null)
             {
-                m_config = Resources.Load<RemedyConfig>(ConfigPath);
-                if (m_config == null)
+                RemedyConfig[] configs = Resources.LoadAll<RemedyConfig>("");
+                if (configs.Length == 0)
                 {
-                    // Only scenario where we can't use Remedy.Log lol.
-                    Debug.LogError($"[Remedy] Could not find config at path: \".../Resource/{ConfigPath}\"");
+                    Debug.LogWarning($"[Remedy] Found no RemedyConfigs in Resources folder. Please create a new one. Using temp for now.");
+                    m_config = ScriptableObject.CreateInstance<RemedyConfig>();
+                }
+                else if (configs.Length > 1)
+                {
+                    Debug.LogWarning($"[Remedy] Found multiple RemedyConfigs in project. Loading the first one.");
+                    m_config = configs[0];
+                }
+                else if (configs.Length == 1)
+                {
+                    m_config = configs[0];
                 }
             }
 
@@ -29,75 +37,57 @@ public class Remedy : AKeySystem
     [HideInCallstack] // <-- lol this shit doesnt work.
     public static void Log(RemedyType logType, LogVerbosity verbosity, object message, Object context = null)
     {
-        if (Config == null || !Config.UseRemedy)
-        {
-            Debug.Log(message, context);
-            return;
-        }
-
-        if (Config.DisableAllLogs)
+        if (Config == null || !Config.EnableRemedy)
         {
             return;
         }
 
-        RemedyTypeSettings settings = logType.GetSettings(Config);
+        RemedyTypeSettings settings = Config.GetTypeSettings(logType);
         if (settings == null || settings.LogVerbosity < verbosity)
         {
             return;
         }
 
-        Debug.Log($"{GetLogTypeHeader(settings, logType)} {message}", context);
+        Debug.Log($"{GetLogTypeHeader(settings)} {message}", context);
     }
 
     [HideInCallstack]
     public static void LogWarning(RemedyType logType, LogVerbosity verbosity, object message, Object context = null)
     {
-        if (Config == null || !Config.UseRemedy)
-        {
-            Debug.LogWarning(message, context);
-            return;
-        }
-
-        if (Config.DisableAllLogs)
+        if (Config == null || !Config.EnableRemedy)
         {
             return;
         }
 
-        RemedyTypeSettings settings = logType.GetSettings(Config);
+        RemedyTypeSettings settings = Config.GetTypeSettings(logType);
         if (settings == null || settings.LogVerbosity < verbosity)
         {
             return;
         }
 
-        Debug.LogWarning($"{GetLogTypeHeader(settings, logType)} {message}", context);
+        Debug.LogWarning($"{GetLogTypeHeader(settings)} {message}", context);
     }
 
     [HideInCallstack]
     public static void LogError(RemedyType logType, object message, Object context = null)
     {
-        if (Config == null || !Config.UseRemedy)
-        {
-            Debug.LogError(message, context);
-            return;
-        }
-
-        if (Config.DisableAllLogs)
+        if (Config == null || !Config.EnableRemedy)
         {
             return;
         }
-
-        RemedyTypeSettings settings = logType.GetSettings(Config);
+        
+        RemedyTypeSettings settings = Config.GetTypeSettings(logType);
         if (settings == null)
         {
             return;
         }
 
-        Debug.LogError($"{GetLogTypeHeader(settings, logType)} {message}", context);
+        Debug.LogError($"{GetLogTypeHeader(settings)} {message}", context);
     }
 
-    private static string GetLogTypeHeader(RemedyTypeSettings remedyTypeSettings, RemedyType remedyType)
+    private static string GetLogTypeHeader(RemedyTypeSettings remedyTypeSettings)
     {
-        return $"<color=#{ColorUtility.ToHtmlStringRGBA(remedyTypeSettings.TypeColor)}>[{remedyType.TypeName}] </color>";
+        return $"<color=#{ColorUtility.ToHtmlStringRGBA(remedyTypeSettings.TypeColor)}>[{remedyTypeSettings.RemedyType}] </color>";
     }
 
     #endregion
