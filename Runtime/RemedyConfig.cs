@@ -11,8 +11,10 @@ namespace RemedySystem
         private bool m_enableRemedy = true;
         public bool EnableRemedy => m_enableRemedy;
 
+        [SerializeField]
         private RemedyTypeSettings m_defaultTypeSettings = new();
-        private List<RemedyTypeSettings> m_typeSettingsList = new();
+        [SerializeField]
+        private List<RemedyTypeSettings> m_typeSettings = new();
 
         [NonSerialized]
         private Dictionary<RemedyType, RemedyTypeSettings> m_cachedSettings = new();
@@ -37,7 +39,7 @@ namespace RemedySystem
         {
             m_cachedSettings.Clear();
             
-            foreach (RemedyTypeSettings typeSettings in m_typeSettingsList)
+            foreach (RemedyTypeSettings typeSettings in m_typeSettings)
             {
                 if (!Enum.TryParse(typeSettings.RemedyType, out RemedyType remedyType))
                 {
@@ -54,5 +56,10 @@ namespace RemedySystem
                 m_cachedSettings.Add(remedyType, typeSettings);
             }
         }
+#if UNITY_EDITOR
+        public const string ENABLE_REMEDY_VARNAME = "m_enableRemedy";
+        public const string DEFAULT_TYPE_SETTINGS_VARNAME = "m_defaultTypeSettings";
+        public const string TYPE_SETTINGS_VARNAME = "m_typeSettings";
+#endif
     }
 }

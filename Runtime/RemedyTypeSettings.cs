@@ -25,6 +25,12 @@ namespace RemedySystem
             m_logVerbosity = defaultSettings.LogVerbosity;
             m_typeColor = defaultSettings.TypeColor;
         }
+        
+#if UNITY_EDITOR
+        public const string REMEDY_TYPE_VARNAME = "m_remedyType";
+        public const string LOG_VERBOSITY_VARNAME = "m_logVerbosity";
+        public const string TYPE_COLOR_VARNAME = "m_typeColor";
+#endif
     }
 
     [Serializable]

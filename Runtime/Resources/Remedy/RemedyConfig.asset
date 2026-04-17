@@ -12,23 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 923e14bd119334b35b8dd831e0499943, type: 3}
   m_Name: RemedyConfig
   m_EditorClassIdentifier: Assembly-CSharp::RemedySystem.RemedyConfig
-  m_useRemedy: 1
-  m_disableAllLogs: 0
-  UnorganizedTypeSettings:
+  m_enableRemedy: 0
+  m_defaultTypeSettings:
+    m_remedyType: 
     m_logVerbosity: 2
     m_typeColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-  GameModesTypeSettings:
-    m_logVerbosity: 2
-    m_typeColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-  GameSaveSystemTypeSettings:
-    m_logVerbosity: 2
-    m_typeColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-  PrimaryLayoutTypeSettings:
-    m_logVerbosity: 2
-    m_typeColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-  SynapseTypeSettings:
-    m_logVerbosity: 2
-    m_typeColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-  UICoreTypeSettings:
-    m_logVerbosity: 2
-    m_typeColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  m_typeSettings:
+  - m_remedyType: 
+    m_logVerbosity: 0
+    m_typeColor: {r: 0, g: 0, b: 0, a: 0}
