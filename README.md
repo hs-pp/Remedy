@@ -1,3 +1,5 @@
 # Remedy
 
-NOTE: Remedy cannot have runtime/editor ASMDEFs because it has a source generator that reads off of the whole codebase.
+NOTE: Remedy cannot be a custom package because it uses a Roslyn Analyzer that generates code based off the whole project.
+
+:(
