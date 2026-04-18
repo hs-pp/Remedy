@@ -28,8 +28,7 @@ namespace RemedySystem
 
             if (!m_cachedSettings.ContainsKey(type))
             {
-                RemedyTypeSettings newSettings = new RemedyTypeSettings(type.ToString(), m_defaultTypeSettings);
-                m_cachedSettings.Add(type, newSettings);
+                m_cachedSettings.Add(type, m_defaultTypeSettings);
             }
             
             return m_cachedSettings[type];

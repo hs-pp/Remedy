@@ -1,0 +1,16 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <ui:ScrollView>
+        <ui:Label text="Remedy" name="title" style="-unity-font-style: bold; font-size: 18px; margin-bottom: 8px;"/>
+        <ui:VisualElement name="no-config-found-screen" style="flex-grow: 1;">
+            <ui:VisualElement style="flex-grow: 1;">
+                <ui:Label text="No RemedyConfig found! Please create a new one and place it in a &lt;b&gt;Resources/&lt;/b&gt; folder!" style="flex-wrap: wrap; white-space: normal;"/>
+                <ui:Button text="Create" name="create-button" style="height: 34px;"/>
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="display-config-screen" style="flex-grow: 1; display: flex;">
+            <ui:Label text="Multiple RemedyConfigs found! Only showing the first one!" name="multi-config-found-label" style="color: rgb(255, 0, 0);"/>
+            <ui:VisualElement name="remedy-config-editor-container" style="flex-grow: 1;"/>
+            <uie:ObjectField label="RemedyConfig" name="config-objectfield" enabled="false" style="margin-top: 16px;"/>
+        </ui:VisualElement>
+    </ui:ScrollView>
+</ui:UXML>

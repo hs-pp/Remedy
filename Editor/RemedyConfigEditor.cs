@@ -1,14 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using RemedySystem;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 using PopupWindow = UnityEditor.PopupWindow;
 
-namespace Remedy.Editor
+namespace RemedySystem.Editor
 {
     [CustomEditor(typeof(RemedyConfig))]
     public class RemedyConfigEditor : UnityEditor.Editor
@@ -24,21 +23,23 @@ namespace Remedy.Editor
         
         public override VisualElement CreateInspectorGUI()
         {
-            var root = new VisualElement();
+            VisualElement root = new VisualElement();
             CreateLayout(root);
             return root;
         }
 
         private void CreateLayout(VisualElement root)
         {
-            var uxmlAsset = Resources.Load<VisualTreeAsset>(UXML_PATH);
+            VisualTreeAsset uxmlAsset = Resources.Load<VisualTreeAsset>(UXML_PATH);
             uxmlAsset.CloneTree(root);
             
             m_enableRemedyField = root.Q<PropertyField>(ENABLE_REMEDY_FIELD_TAG);
             m_enableRemedyField.BindProperty(serializedObject.FindProperty(RemedyConfig.ENABLE_REMEDY_VARNAME));
             
             m_defaultTypeSettingsContainer = root.Q(DEFAULT_TYPE_SETTINGS_CONTAINER_TAG);
-            m_defaultTypeSettingsContainer.Add(new PropertyField(serializedObject.FindProperty(RemedyConfig.DEFAULT_TYPE_SETTINGS_VARNAME)));
+            PropertyField field = new PropertyField();
+            field.BindProperty(serializedObject.FindProperty(RemedyConfig.DEFAULT_TYPE_SETTINGS_VARNAME));
+            m_defaultTypeSettingsContainer.Add(field);
 
             m_typeSettingsListView = root.Q<ListView>(TYPE_SETTINGS_LISTVIEW_TAG);
             m_typeSettingsListView.BindProperty(serializedObject.FindProperty(RemedyConfig.TYPE_SETTINGS_VARNAME));
@@ -147,7 +148,7 @@ namespace Remedy.Editor
         public override VisualElement CreateGUI()
         {
             VisualElement root = new VisualElement();
-            var uxmlAsset = Resources.Load<VisualTreeAsset>(UXML_PATH);
+            VisualTreeAsset uxmlAsset = Resources.Load<VisualTreeAsset>(UXML_PATH);
             uxmlAsset.CloneTree(root);
             
             m_remedyTypeDropdown = root.Q<DropdownField>(REMEDY_TYPE_DROPDOWN_TAG);
