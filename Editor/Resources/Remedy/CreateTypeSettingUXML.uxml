@@ -1,0 +1,9 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <ui:VisualElement name="add-new-settings-container" style="flex-grow: 0; background-color: rgb(43, 43, 43); padding-top: 4px; padding-right: 4px; padding-bottom: 4px; padding-left: 4px;">
+        <ui:Label text="Add New Settings" name="add-new-label" style="-unity-font-style: bold;"/>
+        <ui:VisualElement name="" style="flex-grow: 0; flex-direction: row; margin-left: 4px;">
+            <ui:DropdownField label="Remedy Type" name="remedy-type-dropdown" style="flex-grow: 1;"/>
+            <ui:Button text="Add" name="add-button"/>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

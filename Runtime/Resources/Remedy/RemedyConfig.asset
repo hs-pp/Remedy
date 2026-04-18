@@ -18,6 +18,9 @@ MonoBehaviour:
     m_logVerbosity: 2
     m_typeColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_typeSettings:
-  - m_remedyType: 
-    m_logVerbosity: 0
-    m_typeColor: {r: 0, g: 0, b: 0, a: 0}
+  - m_remedyType: PrimaryLayout
+    m_logVerbosity: 2
+    m_typeColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  - m_remedyType: UICore
+    m_logVerbosity: 2
+    m_typeColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}

@@ -1,17 +1,10 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
-    <ui:VisualElement style="flex-grow: 1;">
+    <ui:VisualElement style="flex-grow: 1; margin-top: 4px;">
         <uie:PropertyField name="enable-remedy-field"/>
         <uie:PropertyField name="default-type-settings-field"/>
-        <ui:Label text="Default Type Settings" name="default-type-settings-label" style="-unity-font-style: bold; margin-top: 8px;"/>
+        <ui:Label text="Default Settings" name="default-type-settings-label" style="-unity-font-style: bold; margin-top: 8px;"/>
         <ui:VisualElement name="default-type-settings-container" style="flex-grow: 0;"/>
-        <ui:Label text="Type Settings" name="type-settings-label" style="-unity-font-style: bold; margin-top: 8px;"/>
+        <ui:Label text="Overrides" name="type-settings-label" style="-unity-font-style: bold; margin-top: 8px; margin-bottom: 2px;"/>
         <ui:ListView show-alternating-row-backgrounds="ContentOnly" show-bound-collection-size="false" name="type-settings-listview" virtualization-method="DynamicHeight" show-add-remove-footer="true" show-border="true" style="flex-grow: 0;"/>
-        <ui:VisualElement name="add-new-settings-container" style="flex-grow: 0; background-color: rgb(43, 43, 43); border-top-left-radius: 4px; border-top-right-radius: 4px; border-bottom-right-radius: 4px; border-bottom-left-radius: 4px; padding-top: 4px; padding-right: 4px; padding-bottom: 4px; padding-left: 4px; margin-top: 8px; margin-bottom: 8px;">
-            <ui:Label text="Add New Settings" name="add-new-label" style="-unity-font-style: bold;"/>
-            <ui:VisualElement name="" style="flex-grow: 0; flex-direction: row; margin-left: 4px;">
-                <ui:DropdownField label="Remedy Type" style="flex-grow: 1;"/>
-                <ui:Button text="Add" name="add-button"/>
-            </ui:VisualElement>
-        </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>
