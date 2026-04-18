@@ -4,7 +4,6 @@ using UnityEngine;
 
 namespace RemedySystem
 {
-    [CreateAssetMenu(fileName = "RemedyConfig", menuName = "Remedy/RemedyConfig")]
     public class RemedyConfig : ScriptableObject
     {
         [SerializeField]
