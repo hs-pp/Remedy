@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
@@ -20,9 +21,13 @@ namespace RemedySystem.Editor
         private PropertyField m_enableRemedyField;
         private VisualElement m_defaultTypeSettingsContainer;
         private ListView m_typeSettingsListView;
+
+        private List<string> m_allRemedyTypes;
         
         public override VisualElement CreateInspectorGUI()
         {
+            m_allRemedyTypes = GetAllRemedyTypes();
+            
             VisualElement root = new VisualElement();
             CreateLayout(root);
             return root;
@@ -56,10 +61,20 @@ namespace RemedySystem.Editor
             };
             PopupWindow.Show(rect, new CreateTypeSettingContentPopup(GetRemedyTypesWithNoSettings(), OnAddTypeSetting));
         }
+        
+        private List<string> GetAllRemedyTypes()
+        {
+            return AppDomain.CurrentDomain.GetAssemblies().SelectMany(assembly => assembly.GetTypes())
+                .Where(type => type.IsSubclassOf(typeof(RemedyType)) && !type.IsAbstract)
+                .Select(t => (RemedyType)Activator.CreateInstance(t))
+                .Select(instance => instance.Name)
+                .OrderBy(name => name)
+                .ToList();
+        }
 
         private List<string> GetRemedyTypesWithNoSettings()
         {
-            List<string> remedyTypes = Enum.GetNames(typeof(RemedyType)).ToList();
+            List<string> remedyTypes = new List<string>(m_allRemedyTypes);
 
             SerializedProperty typeSettingsSP = serializedObject.FindProperty(RemedyConfig.TYPE_SETTINGS_VARNAME);
             for (int i = 0; i < typeSettingsSP.arraySize; i++)
@@ -79,13 +94,6 @@ namespace RemedySystem.Editor
 
             serializedObject.Update();
             
-            // Keep the list ordered to match the RemedyType enum.
-            if (!Enum.TryParse(remedyType, out RemedyType newRemedyType))
-            {
-                Debug.LogError($"Could not parse remedy type '{remedyType}' when adding RemedyTypeSettings.");
-                return;
-            }
-            
             SerializedProperty typeSettingsSP = serializedObject.FindProperty(RemedyConfig.TYPE_SETTINGS_VARNAME);
             int insertIndex = typeSettingsSP.arraySize;
             for (int i = 0; i < typeSettingsSP.arraySize; i++)
@@ -94,12 +102,7 @@ namespace RemedySystem.Editor
                     .GetArrayElementAtIndex(i)
                     .FindPropertyRelative(RemedyTypeSettings.REMEDY_TYPE_VARNAME);
 
-                if (!Enum.TryParse(existingTypeProperty.stringValue, out RemedyType existingRemedyType))
-                {
-                    continue;
-                }
-
-                if (existingRemedyType > newRemedyType)
+                if (string.Compare(existingTypeProperty.stringValue, remedyType) > 0)
                 {
                     insertIndex = i;
                     break;
@@ -127,7 +130,7 @@ namespace RemedySystem.Editor
 
     public class CreateTypeSettingContentPopup : PopupWindowContent
     {
-        public const float SCREEN_WIDTH = 300;
+        public const float SCREEN_WIDTH = 360;
         public const float SCREEN_HEIGHT = 44;
         
         private const string UXML_PATH = "Remedy/CreateTypeSettingUXML";

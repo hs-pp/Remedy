@@ -17,7 +17,7 @@ namespace RemedySystem
         private List<RemedyTypeSettings> m_typeSettings = new();
 
         [NonSerialized]
-        private Dictionary<RemedyType, RemedyTypeSettings> m_cachedSettings = new();
+        private Dictionary<string, RemedyTypeSettings> m_cachedSettings = new();
 
         public RemedyTypeSettings GetTypeSettings(RemedyType type)
         {
@@ -26,12 +26,12 @@ namespace RemedySystem
                 CacheSettings();
             }
 
-            if (!m_cachedSettings.ContainsKey(type))
+            if (!m_cachedSettings.ContainsKey(type.Name))
             {
-                m_cachedSettings.Add(type, m_defaultTypeSettings);
+                m_cachedSettings.Add(type.Name, m_defaultTypeSettings);
             }
             
-            return m_cachedSettings[type];
+            return m_cachedSettings[type.Name];
         }
 
         private void CacheSettings()
@@ -40,19 +40,13 @@ namespace RemedySystem
             
             foreach (RemedyTypeSettings typeSettings in m_typeSettings)
             {
-                if (!Enum.TryParse(typeSettings.RemedyType, out RemedyType remedyType))
-                {
-                    Debug.LogError($"Error parsing remedy type {typeSettings.RemedyType} in RemedyConfig!");
-                    continue;
-                }
-
-                if (m_cachedSettings.ContainsKey(remedyType))
+                if (m_cachedSettings.ContainsKey(typeSettings.RemedyType))
                 {
                     Debug.LogWarning($"Found duplicate RemedyTypeSetting for RemedyType {typeSettings.RemedyType}. Skipping.");
                     continue;
                 }
                 
-                m_cachedSettings.Add(remedyType, typeSettings);
+                m_cachedSettings.Add(typeSettings.RemedyType, typeSettings);
             }
         }
 #if UNITY_EDITOR
