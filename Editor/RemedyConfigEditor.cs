@@ -64,8 +64,8 @@ namespace RemedySystem.Editor
         
         private List<string> GetAllRemedyTypes()
         {
-            return AppDomain.CurrentDomain.GetAssemblies().SelectMany(assembly => assembly.GetTypes())
-                .Where(type => type.IsSubclassOf(typeof(RemedyType)) && !type.IsAbstract)
+            return TypeCache.GetTypesDerivedFrom<RemedyType>()
+                .Where(type => !type.IsAbstract)
                 .Select(t => (RemedyType)Activator.CreateInstance(t))
                 .Select(instance => instance.Name)
                 .OrderBy(name => name)
