@@ -1,13 +1,14 @@
-﻿using UnityEngine;
+﻿using Unity.Scripting.LifecycleManagement;
+using UnityEngine;
 using Object = UnityEngine.Object;
 
 namespace RemedySystem
 {
-    public static class Remedy
+    public static partial class Remedy
     {
         #region Log
 
-        // [AutoStaticsCleanup] Unity 6.5 feature
+        [AutoStaticsCleanup]
         private static RemedyConfig m_config;
         public static RemedyConfig Config // Lazy load this rather than OnInitialize in case we need logging before SystemCore is ready.
         {
