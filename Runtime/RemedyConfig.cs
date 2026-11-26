@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace RemedySystem
 {
-    public class RemedyConfig : ScriptableObject
+    public class RemedyConfig : ScriptableObject, ISerializationCallbackReceiver
     {
         [SerializeField]
         private bool m_enableRemedy = true;
@@ -16,11 +16,21 @@ namespace RemedySystem
         private List<RemedyTypeSettings> m_typeSettings = new();
 
         [NonSerialized]
-        private Dictionary<string, RemedyTypeSettings> m_cachedSettings = new();
+        private Dictionary<string, RemedyTypeSettings> m_cachedSettings;
+
+        void ISerializationCallbackReceiver.OnBeforeSerialize() { }
+
+        /// <summary>
+        /// Any deserialize (inspector edit, undo, reimport) can change the type settings, so rebuild the cache on next use.
+        /// </summary>
+        void ISerializationCallbackReceiver.OnAfterDeserialize()
+        {
+            m_cachedSettings = null;
+        }
 
         public RemedyTypeSettings GetTypeSettings(RemedyType type)
         {
-            if (m_cachedSettings.Count == 0)
+            if (m_cachedSettings == null)
             {
                 CacheSettings();
             }
@@ -35,7 +45,7 @@ namespace RemedySystem
 
         private void CacheSettings()
         {
-            m_cachedSettings.Clear();
+            m_cachedSettings = new Dictionary<string, RemedyTypeSettings>();
             
             foreach (RemedyTypeSettings typeSettings in m_typeSettings)
             {
